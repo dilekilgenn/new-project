@@ -1,2 +1,3 @@
 YOUTUBE_API_KEY="AIzaSyChkhZS9dcmhwJAyrafsB2qYemLBCQODoM"
+YOUTUBE_API_KEY = "AIzaSyChkhZS9dcmhwJAyrafsB2qYemLBCQODoM"
 channel_ids="UCsXVk37bltHxD1rDPwtNM8Q"

@@ -124,4 +124,29 @@ def get_video_details(youtube, video_ids):
             
     return pd.DataFrame(all_video_info)
 
+   def get_video_comments(service, **kwargs):
+    comments, dates, likes, video_titles = [], [], [], []
+    results = service.commentThreads().list(**kwargs).execute()
+
+    while results:
+        for item in results['items']:
+            comment = item['snippet']['topLevelComment']['snippet']['textDisplay']
+            date = item['snippet']['topLevelComment']['snippet']['publishedAt']
+            like = item['snippet']['topLevelComment']['snippet']['likeCount']
+            video_title = service.videos().list(part='snippet', id=kwargs['videoId']).execute()['items'][0]['snippet']['title']
+
+            comments.append(comment)
+            dates.append(date)
+            likes.append(like)
+            video_titles.append(video_title)
+
+        # check if there are more comments
+        if 'nextPageToken' in results:
+            kwargs['pageToken'] = results['nextPageToken']
+            results = service.commentThreads().list(**kwargs).execute()
+        else:
+            break
+
+    return pd.DataFrame({'Video Title': video_titles, 'Comments': comments, 'Date': dates, 'Likes': likes})
+
 
